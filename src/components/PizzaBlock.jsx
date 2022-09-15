@@ -15,6 +15,7 @@ const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
         <ul>
           {types.map((item) => (
             <li
+              key={item}
               onClick={() => {
                 setActiveType(item);
               }}
@@ -27,6 +28,7 @@ const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
         <ul>
           {sizes.map((item, index) => (
             <li
+              key={item}
               onClick={() => {
                 setActiveSize(index);
               }}
@@ -53,7 +55,7 @@ const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
             />
           </svg>
           <span>Добавить</span>
-          <i>count</i>
+          <i>0</i>
         </button>
       </div>
     </div>
