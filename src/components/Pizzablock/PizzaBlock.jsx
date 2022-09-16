@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../scss/components/_pizza-block.scss";
+import "../../scss/components/_pizza-block.scss";
 
 const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
   const typesNames = ["тонкі", "традиційні"];
