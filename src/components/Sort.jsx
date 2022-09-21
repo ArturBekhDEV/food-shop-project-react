@@ -2,14 +2,20 @@ import React from "react";
 import "../scss/components/_sort.scss";
 import { useState } from "react";
 
-const Sort = () => {
+const Sort = ({ value, onClickSort }) => {
   const [isVisiblePopup, setIsVisiblePopup] = useState(false);
-  const [selected, setSelected] = useState(0);
-  const list = ["популярність", "ціна", "алфавіт"];
-  const sortName = list[selected];
+
+  const list = [
+    { name: "популярности DESC", sort: "rating" },
+    { name: "популярности ASC", sort: "-rating" },
+    { name: "цене DESC", sort: "-price" },
+    { name: "цене ASC", sort: "-price" },
+    { name: "алфавит DESC", sort: "-title" },
+    { name: "алфавит ASC", sort: "-title" },
+  ];
 
   const onClickListItem = (index) => {
-    setSelected(index);
+    onClickSort(index);
     setIsVisiblePopup(false);
   };
 
@@ -34,7 +40,7 @@ const Sort = () => {
             setIsVisiblePopup(!isVisiblePopup);
           }}
         >
-          {sortName}
+          {value.name}
         </span>
       </div>
       {isVisiblePopup && (
@@ -43,10 +49,10 @@ const Sort = () => {
             {list.map((item, index) => (
               <li
                 key={item}
-                onClick={() => onClickListItem(index)}
-                className={selected === index ? "active" : ""}
+                onClick={() => onClickListItem(item)}
+                className={value.sort === item.sort ? "active" : ""}
               >
-                {item}
+                {item.name}
               </li>
             ))}
           </ul>
