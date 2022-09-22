@@ -1,11 +1,20 @@
 import React from "react";
 import styles from "./Search.module.scss";
 
-const Search = () => {
+const Search = ({ searchValue, setSearchValue }) => {
   return (
-    <div>
-      <input className={styles.root} placeholder="Найди свою!.." />
-      <button>Найди!</button>
+    <div className={styles.container}>
+      <input
+        value={searchValue}
+        onChange={(e) => {
+          setSearchValue(e.target.value);
+        }}
+        className={styles.root}
+        placeholder="Найди свою!.."
+      />
+      <button className={styles.btn} onClick={() => setSearchValue("")}>
+        Очистить
+      </button>
     </div>
   );
 };

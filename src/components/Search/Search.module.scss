@@ -1,11 +1,32 @@
+.container {
+  display: flex;
+  position: relative;
+}
 .root {
-  width: 250px;
+  width: 350px;
   padding: 8px 10px;
-  border: 0.2px solid rgb(158, 158, 158);
+  border: 0.2px solid rgb(207, 207, 207);
   border-radius: 5px;
   font-size: 14px;
 
   &:focus {
     border: 1px solid rgb(110, 110, 110);
+  }
+}
+
+.btn {
+  font-size: 16px;
+  width: 95px;
+  height: 35px;
+  position: absolute;
+  left: 375px;
+  border: none;
+  background-color: #fe5f1e;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d64f1a;
   }
 }

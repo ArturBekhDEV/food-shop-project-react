@@ -5,15 +5,17 @@ import Cart from "../src/components/pages/Cart";
 import Header from "./components/Header";
 import Home from "./components/pages/Home";
 import NotFoundBlock from "./components/Notfound/Index";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
+  const [searchValue, setSearchValue] = useState("");
+  console.log(searchValue);
   return (
     <div className="wrapper">
-      <Header />
+      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
       <div className="content">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home searchValue={searchValue} />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="*" element={<NotFoundBlock />} />
         </Routes>
