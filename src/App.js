@@ -7,19 +7,23 @@ import Home from "./components/pages/Home";
 import NotFoundBlock from "./components/Notfound/Index";
 import { Routes, Route } from "react-router-dom";
 
+export const searchContext = React.createContext();
+
 function App() {
   const [searchValue, setSearchValue] = useState("");
-  console.log(searchValue);
+
   return (
     <div className="wrapper">
-      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
-      <div className="content">
-        <Routes>
-          <Route path="/" element={<Home searchValue={searchValue} />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="*" element={<NotFoundBlock />} />
-        </Routes>
-      </div>
+      <searchContext.Provider value={{ searchValue, setSearchValue }}>
+        <Header />
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="*" element={<NotFoundBlock />} />
+          </Routes>
+        </div>
+      </searchContext.Provider>
     </div>
   );
 }

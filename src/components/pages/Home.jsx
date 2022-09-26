@@ -5,8 +5,10 @@ import PizzaBlock from "../Pizzablock/PizzaBlock";
 import Skeleton from "../Pizzablock/Skeleton";
 import { useState, useEffect } from "react";
 import Pagination from "../Pagination/Pagination";
+import { searchContext } from "../../App";
 
-const Home = ({ searchValue }) => {
+const Home = () => {
+  const { searchValue } = React.useContext(searchContext);
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
