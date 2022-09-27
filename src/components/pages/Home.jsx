@@ -6,22 +6,27 @@ import Skeleton from "../Pizzablock/Skeleton";
 import { useState, useEffect } from "react";
 import Pagination from "../Pagination/Pagination";
 import { searchContext } from "../../App";
+import { useSelector, useDispatch } from "react-redux";
+import { setCategoryId } from "../../redux/slices/filterSlice";
 
 const Home = () => {
+  const categoryId = useSelector((state) => state.filterSlice.categoryId);
+  const sortType = useSelector((state) => state.filterSlice.sort.sort);
+
+  const dispatch = useDispatch();
   const { searchValue } = React.useContext(searchContext); // global context <---
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [categoryId, setCategoryId] = useState(0);
-  const [sortType, setSortType] = useState({
-    name: "популярности",
-    sort: "rating",
-  });
+
+  const onClickCategory = (id) => {
+    dispatch(setCategoryId(id));
+  };
 
   useEffect(() => {
-    const order = sortType.sort.includes("-") ? "asc" : "desc";
-    const sortByMinus = sortType.sort.replace("-", "");
+    const order = sortType.includes("-") ? "asc" : "desc";
+    const sortByMinus = sortType.replace("-", "");
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     setIsLoading(true);
 
@@ -54,11 +59,8 @@ const Home = () => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories
-          value={categoryId}
-          onClickCategory={(index) => setCategoryId(index)}
-        />
-        <Sort value={sortType} onClickSort={(index) => setSortType(index)} />
+        <Categories value={categoryId} onClickCategory={onClickCategory} />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeletons : pizzas}</div>

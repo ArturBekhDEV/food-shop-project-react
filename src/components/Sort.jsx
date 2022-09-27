@@ -1,9 +1,14 @@
 import React from "react";
 import "../scss/components/_sort.scss";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
+import { setCategorySort } from "../redux/slices/filterSlice";
 
-const Sort = ({ value, onClickSort }) => {
+const Sort = () => {
   const [isVisiblePopup, setIsVisiblePopup] = useState(false);
+  const dispatch = useDispatch();
+
+  const sort = useSelector((state) => state.filterSlice.sort);
 
   const list = [
     { name: "популярности DESC", sort: "rating" },
@@ -14,8 +19,8 @@ const Sort = ({ value, onClickSort }) => {
     { name: "алфавит ASC", sort: "-title" },
   ];
 
-  const onClickListItem = (index) => {
-    onClickSort(index);
+  const onClickListItem = (obj) => {
+    dispatch(setCategorySort(obj));
     setIsVisiblePopup(false);
   };
 
@@ -40,7 +45,7 @@ const Sort = ({ value, onClickSort }) => {
             setIsVisiblePopup(!isVisiblePopup);
           }}
         >
-          {value.name}
+          {sort.name}
         </span>
       </div>
       {isVisiblePopup && (
@@ -50,7 +55,7 @@ const Sort = ({ value, onClickSort }) => {
               <li
                 key={item}
                 onClick={() => onClickListItem(item)}
-                className={value.sort === item.sort ? "active" : ""}
+                className={sort.sort === item.sort ? "active" : ""}
               >
                 {item.name}
               </li>
