@@ -8,7 +8,8 @@ import Pagination from "../Pagination/Pagination";
 import { searchContext } from "../../App";
 
 const Home = () => {
-  const { searchValue } = React.useContext(searchContext);
+  const { searchValue } = React.useContext(searchContext); // global context <---
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
