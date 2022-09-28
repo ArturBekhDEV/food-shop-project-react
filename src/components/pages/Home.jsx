@@ -8,45 +8,34 @@ import Pagination from "../Pagination/Pagination";
 import { searchContext } from "../../App";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { setCategoryId } from "../../redux/slices/filterSlice";
+import { setCategoryId, setPageCounts } from "../../redux/slices/filterSlice";
 
 const Home = () => {
   const categoryId = useSelector((state) => state.filterSlice.categoryId);
   const sortType = useSelector((state) => state.filterSlice.sort.sort);
+  const currentPageCount = useSelector((state) => state.filterSlice.pagination);
 
   const dispatch = useDispatch();
   const { searchValue } = React.useContext(searchContext); // global context <---
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const onClickCategory = (id) => {
     dispatch(setCategoryId(id));
   };
-
+  const onChangePage = (num) => {
+    dispatch(setPageCounts(num));
+  };
   useEffect(() => {
     const order = sortType.includes("-") ? "asc" : "desc";
     const sortByMinus = sortType.replace("-", "");
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     setIsLoading(true);
 
-    //* DEFAULT FETCH *//
-    //   const pizzaItems = fetch(
-    //     `https://6323608c5c1b43572794bb2a.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortByMinus}&order=${order}`
-    //   );
-    //   pizzaItems
-    //     .then((res) => {
-    //       return res.json();
-    //     })
-    //     .then((pizzas) => {
-    //       setItems(pizzas);
-    //       setIsLoading(false);
-    //     });
-
     const pizzaItems = axios
       .get(
-        `https://6323608c5c1b43572794bb2a.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortByMinus}&order=${order}`
+        `https://6323608c5c1b43572794bb2a.mockapi.io/items?page=${currentPageCount}&limit=4&${category}&sortBy=${sortByMinus}&order=${order}`
       )
       .then((res) => {
         setItems(res.data);
@@ -54,7 +43,7 @@ const Home = () => {
       });
 
     window.scrollTo(0, 0);
-  }, [categoryId, sortType, currentPage]);
+  }, [categoryId, sortType, currentPageCount]);
 
   const pizzas = items
     .filter((obj) => {
@@ -76,7 +65,7 @@ const Home = () => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeletons : pizzas}</div>
-      <Pagination onChangeProp={(num) => setCurrentPage(num)} />
+      <Pagination value={currentPageCount} onChangeProp={onChangePage} />
     </div>
   );
 };
