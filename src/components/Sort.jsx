@@ -66,5 +66,4 @@ const Sort = () => {
     </div>
   );
 };
-
 export default Sort;

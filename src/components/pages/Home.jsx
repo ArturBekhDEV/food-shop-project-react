@@ -8,9 +8,16 @@ import Pagination from "../Pagination/Pagination";
 import { searchContext } from "../../App";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { setCategoryId, setPageCounts } from "../../redux/slices/filterSlice";
+import {
+  setCategoryId,
+  setPageCounts,
+  setFilters,
+} from "../../redux/slices/filterSlice";
+import QueryString from "qs";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   const categoryId = useSelector((state) => state.filterSlice.categoryId);
   const sortType = useSelector((state) => state.filterSlice.sort.sort);
   const currentPageCount = useSelector((state) => state.filterSlice.pagination);
@@ -43,6 +50,15 @@ const Home = () => {
       });
 
     window.scrollTo(0, 0);
+  }, [categoryId, sortType, currentPageCount]);
+
+  useEffect(() => {
+    const queryString = QueryString.stringify({
+      sortType: sortType,
+      categoryId,
+      currentPageCount,
+    });
+    navigate(`?${queryString}`);
   }, [categoryId, sortType, currentPageCount]);
 
   const pizzas = items
