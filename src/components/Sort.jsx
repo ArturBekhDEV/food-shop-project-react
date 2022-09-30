@@ -1,14 +1,16 @@
 import React from "react";
 import "../scss/components/_sort.scss";
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { setCategorySort } from "../redux/slices/filterSlice";
+import { useEffect } from "react";
 
 const Sort = () => {
   const [isVisiblePopup, setIsVisiblePopup] = useState(false);
   const dispatch = useDispatch();
 
   const sort = useSelector((state) => state.filterSlice.sort);
+  const targetSortElement = useRef();
 
   const list = [
     { name: "популярности DESC", sort: "rating" },
@@ -24,8 +26,22 @@ const Sort = () => {
     setIsVisiblePopup(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (e.path.includes(targetSortElement.current)) {
+        console.log("something");
+      } else setIsVisiblePopup(false);
+    };
+
+    document.body.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.body.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={targetSortElement} className="sort">
       <div className="sort__label">
         <svg
           width="10"
