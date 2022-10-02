@@ -8,11 +8,7 @@ import Pagination from "../Pagination/Pagination";
 import { searchContext } from "../../App";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import {
-  setCategoryId,
-  setPageCounts,
-  setFilters,
-} from "../../redux/slices/filterSlice";
+import { setCategoryId, setPageCounts } from "../../redux/slices/filterSlice";
 import QueryString from "qs";
 import { useNavigate } from "react-router-dom";
 
@@ -34,19 +30,23 @@ const Home = () => {
   const onChangePage = (num) => {
     dispatch(setPageCounts(num));
   };
+
   useEffect(() => {
     const order = sortType.includes("-") ? "asc" : "desc";
     const sortByMinus = sortType.replace("-", "");
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     setIsLoading(true);
 
-    const pizzaItems = axios
+    axios
       .get(
         `https://6323608c5c1b43572794bb2a.mockapi.io/items?page=${currentPageCount}&limit=4&${category}&sortBy=${sortByMinus}&order=${order}`
       )
       .then((res) => {
         setItems(res.data);
         setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err, "ERROR CONSOLE TEST");
       });
 
     window.scrollTo(0, 0);
